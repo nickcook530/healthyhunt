@@ -1,0 +1,4 @@
+*.pyc
+.idea
+cache
+healthyhunt-2.7env
