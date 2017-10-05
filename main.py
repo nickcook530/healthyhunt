@@ -47,7 +47,7 @@ class RestaurantScreen(Screen):
         self.restaurant_screen_layout()
 
     def restaurant_screen_layout(self):
-        layout = GridLayout(cols=1, spacing=10, size_hint_y=None)
+        layout = GridLayout(cols=1, spacing=10, size_hint_y=None, padding=[50, 0, 50, 0])
         # Make sure the height is such that there is something to scroll.
         layout.bind(minimum_height=layout.setter('height'))
         with requests.Session() as s:
@@ -57,12 +57,12 @@ class RestaurantScreen(Screen):
         # build the restaurant buttons based on alphabetic dict
         rank = 1
         for _ in query_dict:
-            btn = Button(text=str(query_dict[str(rank)]), size_hint_y=None, height=40)
+            btn = Button(text=str(query_dict[str(rank)]), size_hint_y=None, height=100)
             btn.bind(on_release=restaurant_to_filter)
             layout.add_widget(btn)
             rank += 1
         # layer on the widgets to allow scrolling
-        root = ScrollView(size_hint=(1, None), size=(Window.width, Window.height))
+        root = ScrollView(size_hint=(1, None), size=(Window.width, Window.height), bar_color=(0.051, 0.173, 1, 0.9), bar_width=10)
         root.add_widget(layout)
         self.add_widget(root)
 
@@ -73,7 +73,7 @@ class FilterScreen(Screen):
         self.filter_screen_layout()
 
     def filter_screen_layout(self):
-        layout = GridLayout(cols=1, spacing=10)
+        layout = GridLayout(cols=1, spacing=10, padding=[50, 0, 50, 0])
 
         lowcal_btn = Button(text='Low Calorie Options', size_hint_y=None, height=40)
         lowcal_btn.bind(on_release=filter_to_result)
@@ -97,7 +97,7 @@ class ResultScreen(Screen):
 
     def result_screen_layout(self):
         global final_url
-        layout = GridLayout(cols=1, spacing=10, size_hint_y=None)
+        layout = GridLayout(cols=1, spacing=10, size_hint_y=None, padding=[50, 0, 50, 0])
         # Make sure the height is such that there is something to scroll.
         layout.bind(minimum_height=layout.setter('height'))
         with requests.Session() as s:

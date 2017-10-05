@@ -1,4 +1,5 @@
 *.pyc
 .idea
 cache
+menu stat csv
 healthyhunt-2.7env
