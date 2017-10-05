@@ -1,6 +1,7 @@
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.scrollview import ScrollView
 from kivy.core.window import Window
@@ -47,7 +48,9 @@ class RestaurantScreen(Screen):
         self.restaurant_screen_layout()
 
     def restaurant_screen_layout(self):
-        layout = GridLayout(cols=1, spacing=10, size_hint_y=None, padding=[50, 0, 50, 0])
+        layout = GridLayout(cols=1, spacing=10, size_hint_y=None, padding=[50, 0, 50, 0]) # size_hint_x=.8
+        root = ScrollView(size_hint=(1, None), size=(Window.width, Window.height), bar_color=(0.051, 0.173, 1, 0.9),
+                          bar_width=10)
         # Make sure the height is such that there is something to scroll.
         layout.bind(minimum_height=layout.setter('height'))
         with requests.Session() as s:
@@ -57,12 +60,12 @@ class RestaurantScreen(Screen):
         # build the restaurant buttons based on alphabetic dict
         rank = 1
         for _ in query_dict:
-            btn = Button(text=str(query_dict[str(rank)]), size_hint_y=None, height=100)
+            btn = Button(text=str(query_dict[str(rank)]), size_hint_y=None, height=150)
             btn.bind(on_release=restaurant_to_filter)
             layout.add_widget(btn)
             rank += 1
         # layer on the widgets to allow scrolling
-        root = ScrollView(size_hint=(1, None), size=(Window.width, Window.height), bar_color=(0.051, 0.173, 1, 0.9), bar_width=10)
+
         root.add_widget(layout)
         self.add_widget(root)
 
@@ -73,17 +76,17 @@ class FilterScreen(Screen):
         self.filter_screen_layout()
 
     def filter_screen_layout(self):
-        layout = GridLayout(cols=1, spacing=10, padding=[50, 0, 50, 0])
-
-        lowcal_btn = Button(text='Low Calorie Options', size_hint_y=None, height=40)
+        #layout = GridLayout(cols=1, spacing=10, padding=[50, 0, 50, 0])
+        layout = BoxLayout(orientation='vertical', spacing=10, padding=[50, 0, 50, 0])
+        lowcal_btn = Button(text='Low Calorie Options')
         lowcal_btn.bind(on_release=filter_to_result)
         layout.add_widget(lowcal_btn)
 
-        lowcarb_btn = Button(text='Low Carbohydrate Options', size_hint_y=None, height=40)
+        lowcarb_btn = Button(text='Low Carbohydrate Options')
         lowcarb_btn.bind(on_release=filter_to_result)
         layout.add_widget(lowcarb_btn)
 
-        highprotein_btn = Button(text='High Protein Options', size_hint_y=None, height=40)
+        highprotein_btn = Button(text='High Protein Options')
         highprotein_btn.bind(on_release=filter_to_result)
         layout.add_widget(highprotein_btn)
 
@@ -97,6 +100,8 @@ class ResultScreen(Screen):
 
     def result_screen_layout(self):
         global final_url
+        root = ScrollView(size_hint=(1, None), size=(Window.width, Window.height), bar_color=(0.051, 0.173, 1, 0.9),
+                          bar_width=10)
         layout = GridLayout(cols=1, spacing=10, size_hint_y=None, padding=[50, 0, 50, 0])
         # Make sure the height is such that there is something to scroll.
         layout.bind(minimum_height=layout.setter('height'))
@@ -106,11 +111,12 @@ class ResultScreen(Screen):
 
         rank = 1
         for _ in query_dict:
-            btn = Button(text=str(query_dict[str(rank)]['name']) + ' | calories = {},'.format(query_dict[str(rank)]['calories']), size_hint_y=None, height=40)
+            btn = Button(text=str(query_dict[str(rank)]['name']) + ' | calories = {},'.format(query_dict[str(rank)]['calories']),
+                         size_hint_y=None, height=150, text_size=(None,None))
             btn.bind(on_release=restart)
             layout.add_widget(btn)
             rank += 1
-        root = ScrollView(size_hint=(1, None), size=(Window.width, Window.height))
+
         root.add_widget(layout)
         self.add_widget(root)
 
