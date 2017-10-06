@@ -68,8 +68,9 @@ class RestaurantScreen(Screen):
         # build the restaurant buttons based on alphabetic dict
         rank = 1
         for _ in query_dict:
-            btn = Button(text=str(query_dict[str(rank)]), size_hint_y=None, height=150)
+            btn = Button(text=str(query_dict[str(rank)]), size_hint_y=None, height=150, halign='center', valign='center')
             btn.bind(on_release=restaurant_to_filter)
+            btn.bind(size=btn.setter('text_size'))
             layout.add_widget(btn)
             rank += 1
         # layer on the widgets to allow scrolling
@@ -85,15 +86,16 @@ class FilterScreen(Screen):
         self.filter_screen_layout()
 
     def filter_screen_layout(self):
-        layout = BoxLayout(orientation='vertical', spacing=10, padding=[50, 0, 50, 0])
-        header = Label(text='2) Select a Nutrition Filter:', font_size='50', halign='left', padding=(100, 100), markup=True, bold=True)
+        layout = BoxLayout(orientation='vertical', spacing=10, padding=[50, 0, 50, 50])
+        header = Label(text='2) Select a Nutrition Filter:', font_size='50', halign='left',
+                       padding=(100, 100), markup=True, bold=True)
         layout.add_widget(header)
 
         lowcal_btn = Button(text='Low Calorie Options')
         lowcal_btn.bind(on_release=filter_to_result)
         layout.add_widget(lowcal_btn)
 
-        lowcarb_btn = Button(text='Low Carbohydrate Options')
+        lowcarb_btn = Button(text='Low Carb Options')
         lowcarb_btn.bind(on_release=filter_to_result)
         layout.add_widget(lowcarb_btn)
 
@@ -128,35 +130,38 @@ class ResultScreen(Screen):
 
         if 'lowcal' in final_url:
             for _ in query_dict:
-                name= query_dict[str(rank)]['name']
+                name = query_dict[str(rank)]['name']
                 calories = query_dict[str(rank)]['calories']
-                btn = Button(text=str(name) + '\nCalories = {}'.format(calories),
-                                    size_hint_y=None, height=150, halign='center', text_size=(None,None))
+                btn = Button(text='[b][u]' + str(name) + '[/u][/b]' + '\nCalories = {}'.format(calories),
+                                    size_hint_y=None, height=150, halign='center', valign='center', markup=True)
                 btn.bind(on_release=restart)
+                btn.bind(size=btn.setter('text_size'))
                 layout.add_widget(btn)
                 rank += 1
 
         if 'lowcarb' in final_url:
             for _ in query_dict:
-                name= query_dict[str(rank)]['name']
+                name = query_dict[str(rank)]['name']
                 carbs = query_dict[str(rank)]['carbs']
                 calories = query_dict[str(rank)]['calories']
-                btn = Button(text=str(name) + '\nCarbs = {} grams'.format(carbs) +
+                btn = Button(text='[b][u]' + str(name) + '[/u][/b]' + '\nCarbs = {} grams'.format(carbs) +
                                 ' | Calories = {}'.format(calories), size_hint_y=None, height=150, halign='center',
-                                text_size=(None,None))
+                                valign='center', markup=True)
                 btn.bind(on_release=restart)
+                btn.bind(size=btn.setter('text_size'))
                 layout.add_widget(btn)
                 rank += 1
 
         if 'highprotein' in final_url:
             for _ in query_dict:
-                name= query_dict[str(rank)]['name']
+                name = query_dict[str(rank)]['name']
                 protein = query_dict[str(rank)]['protein']
                 calories = query_dict[str(rank)]['calories']
                 ratio = round(protein/calories, 2)
-                btn = Button(text=str(name) + '\nProtein = {} grams,'.format(protein) +
+                btn = Button(text='[b][u]' + str(name) + '[/u][/b]' + '\nProtein = {} grams'.format(protein) +
                               ' | Calories = {}'.format(calories) + '\nRatio = {} grams of Protein per Calorie'.format(ratio),
-                             size_hint_y=None, height=200, halign='center', text_size=(None,None))
+                             size_hint_y=None, height=250, halign='center', valign='center', markup=True)
+                btn.bind(size=btn.setter('text_size'))
                 btn.bind(on_release=restart)
                 layout.add_widget(btn)
                 rank += 1
