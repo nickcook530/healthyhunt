@@ -95,7 +95,7 @@ class FilterScreen(Screen):
         lowcal_btn.bind(on_release=filter_to_result)
         layout.add_widget(lowcal_btn)
 
-        lowcarb_btn = Button(text='Low Carb Options')
+        lowcarb_btn = Button(text='Low Carbohydrate Options')
         lowcarb_btn.bind(on_release=filter_to_result)
         layout.add_widget(lowcarb_btn)
 
