@@ -37,7 +37,6 @@ class MenuStat2016(BaseModel):
 
 
 
-
 db.connect()
 restaurant_dict = {}
 t = 1
